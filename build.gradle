@@ -1,0 +1,50 @@
+plugins {
+  id 'java'
+  id 'application'
+  id 'jacoco'
+  id 'idea'
+  id 'eclipse'
+  id 'com.github.johnrengelman.shadow' version '1.2.1'
+  id 'com.github.kt3k.coveralls' version '2.4.0'
+}
+
+compileJava {
+  sourceCompatibility = 1.7
+  targetCompatibility = 1.7
+}
+
+version = '0.1'
+
+mainClassName = 'nl.esciencecenter.uplift.Uplift'
+
+ext {
+    dropwizardVersion = '0.8.2'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'io.dropwizard', name: 'dropwizard-testing', version: dropwizardVersion
+
+    compile group: 'io.dropwizard', name: 'dropwizard-core', version: dropwizardVersion
+    compile group: 'io.dropwizard', name: 'dropwizard-jdbi', version: dropwizardVersion
+
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true // coveralls plugin depends on xml format report
+        html.enabled = true
+    }
+}
+
+run {
+    args 'server', 'config.yml'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.5'
+}
